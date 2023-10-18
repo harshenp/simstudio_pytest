@@ -45,3 +45,12 @@ Example -    @pytest.mark.high_priority
 2-  To run -   without report  - (pytest file_name -k "high_priority")  
                with report     - (pytest file_name -k "high_priority" --html=report.html)
 
+
+*** Create a Virtual Environment ***
+1- python -m venv venv
+2- Activate the virtual environment:
+   On Windows: venv\Scripts\activate
+   On macOS and Linux: source venv/bin/activate
+3- Install the packages from requirements.txt:
+   pip install -r requirements.txt
+      

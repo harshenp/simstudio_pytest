@@ -1,4 +1,4 @@
-#pytest main_1--html=report.html
+#pytest main_1.py --html=report.html
 #open report.html
 #without automatic user creation
 import os
@@ -30,7 +30,7 @@ def test_url_and_enter_username(driver):
     url = "https://simstudio-uat.catalyx.live/signin?module_id=d37817a3-a0c8-4942-a788-c000af6265e0"
     driver.get(url)
     time.sleep(1)
-    username = "h2@gmail.com"
+    username = "hff@gmail.com"
     login = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@id='user_name']")))
     login.send_keys(username, Keys.ENTER)
     time.sleep(3)
@@ -77,9 +77,9 @@ def test_simulation_name(driver):
     print(actual_text)
     if actual_text == expected_text:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '1.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'welcome_page.png'))
     else:  
-        driver.save_screenshot(os.path.join(screenshot_false, '1.png')) 
+        driver.save_screenshot(os.path.join(screenshot_false, 'welcome_page.png')) 
         assert actual_text == expected_text, f"Text verification failed. Expected: '{expected_text}', Actual: '{actual_text}'"
     
 def test_first_page_heading(driver):  
@@ -92,9 +92,9 @@ def test_first_page_heading(driver):
     print(actual_heading)
     if actual_heading == expected_heading:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '2.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'welcome_page.png'))
     else:   
-        driver.save_screenshot(os.path.join(screenshot_false, '2.png')) 
+        driver.save_screenshot(os.path.join(screenshot_false, 'welcome_page.png')) 
         assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
     
 def test_first_page_content(driver):  
@@ -107,9 +107,9 @@ def test_first_page_content(driver):
     expected_content = "As you open your laptop on a Monday morning, you have a mail from your Managing Director, Dr. Bean himself!"
     if actual_content == expected_content:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '3.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'welcome_page.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '3.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'welcome_page.png'))
         assert actual_content == expected_content, f"Content verification failed. Expected: '{expected_content}', Actual: '{actual_content}'"
     
 def test_first_page_content_intrigued(driver):  
@@ -121,9 +121,9 @@ def test_first_page_content_intrigued(driver):
     expected_content_intregued = "Intrigued, you open the mail to see what it says…"
     if actual_content_intrigued == expected_content_intregued:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '4.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'welcome_page.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '4.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'welcome_page.png'))
         assert actual_content_intrigued == expected_content_intregued, f"Content verification failed. Expected: '{expected_content_intregued}', Actual: '{actual_content_intrigued}'"
 
 
@@ -148,9 +148,9 @@ def test_case_summary(driver):
     print(actual_kpi_1_content)
     if actual_kpi_1_content == expected_kpi_1_content:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert actual_kpi_1_content == expected_kpi_1_content, f"Content verification failed. Expected: '{expected_kpi_1_content}', Actual: '{actual_kpi_1_content}'"
 
     kpi_1_perc = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='case_study_container']//div[1]//div[4]")))
@@ -159,9 +159,9 @@ def test_case_summary(driver):
     print(actual_kpi_1_perc)
     if actual_kpi_1_perc == expected_kpi_1_perc:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert actual_kpi_1_perc == expected_kpi_1_perc, f"Content verification failed. Expected: '{expected_kpi_1_perc}', Actual: '{actual_kpi_1_perc}'"
 
     kpi_2_content = driver.find_element(By.XPATH, "//div[normalize-space()='Cumulative Operating Margin %']")
@@ -170,9 +170,9 @@ def test_case_summary(driver):
     print(actual_kpi_2_content)
     if actual_kpi_2_content == expected_kpi_2_content:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert actual_kpi_2_content == expected_kpi_2_content, f"Content verification failed. Expected: '{expected_kpi_2_content}', Actual: '{actual_kpi_2_content}'"
 
     kpi_2_perc = driver.find_element(By.XPATH, "//div[@id='sib_case_study']//div[2]//div[4]")
@@ -181,9 +181,9 @@ def test_case_summary(driver):
     print(actual_kpi_2_perc)
     if actual_kpi_2_perc == expected_kpi_2_perc:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '5.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert actual_kpi_2_perc == expected_kpi_2_perc, f"Content verification failed. Expected: '{expected_kpi_2_perc}', Actual: '{actual_kpi_2_perc}'"
 
 def test_table1_in_case_summary(driver):  
@@ -206,9 +206,9 @@ def test_table1_in_case_summary(driver):
     ]
     if table1_data == expected_table1_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '6.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '6.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert table1_data == expected_table1_data, "Table data does not match expected data."
 
 def test_table2_in_case_summary(driver):  
@@ -232,9 +232,9 @@ def test_table2_in_case_summary(driver):
     ]
     if table2_data == expected_table2_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '7.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'case_summary.png'))
     else:    
-        driver.save_screenshot(os.path.join(screenshot_false, '7.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'case_summary.png'))
         assert table2_data == expected_table2_data, "Table data does not match expected data."
 
 
@@ -266,10 +266,10 @@ def test_period_1_sliders_default_value(driver):
     non_zero_values = [value for value in extracted_values if value != '0']
     if non_zero_values == expected_values:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '8.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Assertion passed. Sliders Values match the expected values.")
     else:    
-        driver.save_screenshot(os.path.join(screenshot_false, '8.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))
         assert non_zero_values == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_values}"
 
     #verify projected Revenue value
@@ -281,10 +281,10 @@ def test_period_1_projected_revenue_default(driver):
     expected_proj_rev = "USD 1,142,400"
     if actual_proj_rev == expected_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '9.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_rev is matched ")                               
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '9.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))
         assert actual_proj_rev == expected_proj_rev, f"Text verification failed. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
 
 
@@ -297,10 +297,10 @@ def test_period_1_projected_operating_margin_default(driver):
     expected_proj_mg = "USD 57,720"
     if actual_proj_mg == expected_proj_mg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '10.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_mg is matched ")                            
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '10.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))
         assert actual_proj_mg == expected_proj_mg, f"Text verification failed. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
 
     #company performance content
@@ -312,10 +312,10 @@ def test_period_1_performance_content(driver):
     expected_perf_cont = "Performance is calculated considering similar market share as last month: 20%"
     if actual_perf_cont == expected_perf_cont:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '11.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("perf_cont is matched ")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '11.png'))                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                 
         assert actual_perf_cont == expected_perf_cont, f"Text verification failed. Expected: '{expected_perf_cont}', Actual: '{actual_perf_cont}'"
 
     #click on expand all
@@ -337,10 +337,10 @@ def test_period_1_profit_loss_statement(driver):
     expected_pl_cont = "Hover over the items for the explanation."
     if actual_pl_cont == expected_pl_cont:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '12.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("profit loss statement matched")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '12.png'))                               
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                               
         assert actual_pl_cont == expected_pl_cont, f"Text verification failed. Expected: '{expected_pl_cont}', Actual: '{actual_pl_cont}'"
 
 
@@ -371,10 +371,10 @@ def test_period_1_table_1_default(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '13.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Default pl table data matched" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '13.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, "Profit-Loss Table default content does not match the expected data"
 
 def test_period_1_table_2_default(driver):  
@@ -404,10 +404,10 @@ def test_period_1_table_2_default(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '14.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Default Cost Structure table data matched" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '14.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " Cost Structure Table Default content does not match the expected data"
 
 
@@ -439,9 +439,9 @@ def test_period_1_slider_1_manipulation(driver):
     updated_value = type(desired_value)(updated_value)
     if updated_value==desired_value:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '15.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '15.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert updated_value==desired_value,f"Could not move as desired . Expected: '{desired_value}', Actual: '{updated_value}'"
 
 
@@ -455,10 +455,10 @@ def test_period_1_projected_revenue_after_slider_1_manipulation(driver):
     print(actual_proj_rev)
     if actual_proj_rev == expected_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '16.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_rev is matched after first manipulation")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '16.png'))                              
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                              
     assert actual_proj_rev == expected_proj_rev, f"Text verification failed in first slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
 
 def test_period_1_projected_margin_after_slider_1_manipulation(driver):  
@@ -470,10 +470,10 @@ def test_period_1_projected_margin_after_slider_1_manipulation(driver):
     print(actual_proj_mg)
     if actual_proj_mg == expected_proj_mg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '17.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_mg is matched after first manipulation ") 
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '17.png'))                                      
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                      
     assert actual_proj_mg == expected_proj_mg, f"Text verification failed in first slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
 
     #now check changes on tables after first slider regulation
@@ -501,14 +501,14 @@ def test_period_1_table_1_after_slider_1_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '18.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("pl table data matched after first slider manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '18.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After first slider manipulation Profit-Loss Table content does not match the expected data"
 
     #table2 
-def test_period_1_table_1_after_slider_1_manipulation(driver):  
+def test_period_1_table_2_after_slider_1_manipulation(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     table = driver.find_element(By.XPATH, "//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table")
@@ -531,10 +531,10 @@ def test_period_1_table_1_after_slider_1_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '19.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Cost Structure table data matched after first silder manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '19.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After first slider manipulation Cost Structure Table content does not match the expected data"
 
     ##Second  slider-  Manipulation
@@ -561,10 +561,10 @@ def test_period_1_projected_revenue_after_slider_2_manipulation(driver):
     print(actual_proj_rev)
     if actual_proj_rev == expected_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '20.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_rev is matched after second manipulation")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '20.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                  
     assert actual_proj_rev == expected_proj_rev, f"Text verification failed in second slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
 def test_period_1_projected_margin_after_slider_2_manipulation(driver):  
     if popup_detected:
@@ -575,15 +575,15 @@ def test_period_1_projected_margin_after_slider_2_manipulation(driver):
     print(actual_proj_mg)
     if actual_proj_mg == expected_proj_mg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '21.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_mg is matched after second manipulation ")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '21.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                    
     assert actual_proj_mg == expected_proj_mg, f"Text verification failed in second slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
 
     #now check changes on tables after Second slider regulation
     #table 1
-def test_period_1_projected_table_1_after_slider_2_manipulation(driver):  
+def test_period_1_table_1_after_slider_2_manipulation(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     table = driver.find_element(By.CLASS_NAME, "bold_pandl")
@@ -606,10 +606,10 @@ def test_period_1_projected_table_1_after_slider_2_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '22.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("pl table data matched after second slider manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '22.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After second slider manipulation Profit-Loss Table content does not match the expected data"
 
     #table2 
@@ -636,10 +636,10 @@ def test_period_1_table_2_after_slider_2_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '23.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Cost Structure table data matched after second silder manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '23.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After second slider manipulation Cost Structure Table content does not match the expected data"
 
 
@@ -670,13 +670,13 @@ def test_period_1_projected_revenue_after_slider_3_manipulation(driver):
     print(actual_proj_rev)
     if actual_proj_rev == expected_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '24.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_rev is matched after 3rd manipulation")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '24.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                     
     assert actual_proj_rev == expected_proj_rev, f"Text verification failed in 3rd slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
 
-def test_period_1_projected_revenue_after_slider_3_manipulation(driver):  
+def test_period_1_projected_margin_after_slider_3_manipulation(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
@@ -685,10 +685,10 @@ def test_period_1_projected_revenue_after_slider_3_manipulation(driver):
     print(actual_proj_mg)
     if actual_proj_mg == expected_proj_mg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '25.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_mg is matched after 3rd manipulation ")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '25.png'))                                       
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                       
     assert actual_proj_mg == expected_proj_mg, f"Text verification failed in 3rd slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
 
     #now check changes on tables after 3rd slider regulation
@@ -716,10 +716,10 @@ def test_period_1_table_1_after_slider_3_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '26.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("pl table data matched after 3rd slider manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '26.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After 3rd slider manipulation Profit-Loss Table content does not match the expected data"
 
     #table2 
@@ -746,10 +746,10 @@ def test_period_1_table_2_after_slider_3_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '27.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Cost Structure table data matched after 3rd silder manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '27.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After 3rd slider manipulation Cost Structure Table content does not match the expected data"
 
     ##4th slider-  Manipulation
@@ -773,10 +773,10 @@ def test_period_1_projected_revenue_after_slider_4_manipulation(driver):
     print(actual_proj_rev)
     if actual_proj_rev == expected_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '28.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_rev is matched after 4th manipulation")
     else:        
-        driver.save_screenshot(os.path.join(screenshot_false, '28.png'))                             
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                             
         assert False, f"Text verification failed in 4th slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
 
 def test_period_1_projected_margin_after_slider_4_manipulation(driver):  
@@ -788,10 +788,10 @@ def test_period_1_projected_margin_after_slider_4_manipulation(driver):
     print(actual_proj_mg)
     if actual_proj_mg == expected_proj_mg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '29.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Proj_mg is matched after 4th manipulation ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '29.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert actual_proj_mg == expected_proj_mg, f"Text verification failed in 4th slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
 
     #now check changes on tables after 4th slider regulation
@@ -819,10 +819,10 @@ def test_period_1_table_1_after_slider_4_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '30.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("pl table data matched after 4th slider manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '30.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After 4th slider manipulation Profit-Loss Table content does not match the expected data"
 
     #table2 
@@ -849,10 +849,10 @@ def test_period_1_table_2_after_slider_4_manipulation(driver):
     ]
     if table_data == expected_data:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '31.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Cost Structure table data matched after 4th silder manipulation" )
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '31.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, " After 4th slider manipulation Cost Structure Table content does not match the expected data"
 
     ##click on submit button
@@ -891,10 +891,10 @@ def test_period_2_market_share(driver):
     print(market_share.text)
     if expected_min_market_share <= actual_market_share <= expected_max_market_share:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '32.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("Market share is within the expected range") 
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '32.png'))                              
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                              
     assert expected_min_market_share <= actual_market_share <= expected_max_market_share, f"Text verification failed in Period 2. Expected:0% to 100% Actual: '{market_share.text}'"
 
     #Sliders
@@ -917,10 +917,10 @@ def test_period_2_sliders_default_value(driver):
     non_zero_set = set(non_zero_values)
     if non_zero_set == expected_values:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '33.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("Sliders values matched in period 2")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '33.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))    
     assert non_zero_set == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_set}"
 
 def test_period_2_projected_revenue(driver):  
@@ -932,10 +932,10 @@ def test_period_2_projected_revenue(driver):
     print(actual_proj_rev)
     if actual_proj_rev >= expected_min_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '34.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("Projected revenue Testing Passed in Period 2¸")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '34.png'))                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                    
     assert actual_proj_rev >= expected_min_proj_rev, f"Projected revenue not matched  . Expected: '{expected_min_proj_rev}', Actual: '{actual_proj_rev}'"
 
     # click on Expand all in Period-2
@@ -959,10 +959,10 @@ def test_period_2_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '35.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")     
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '35.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                  
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 2(E)
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[2]")
@@ -971,10 +971,10 @@ def test_period_2_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '35.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '35.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                   
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -991,10 +991,10 @@ def test_period_2_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '36.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '36.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                     
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #month 2(E)
@@ -1004,10 +1004,10 @@ def test_period_2_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '36.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '36.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                   
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -1024,10 +1024,10 @@ def test_period_2_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '37.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '37.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                   
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Alpha Corp.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[3]")
@@ -1036,10 +1036,10 @@ def test_period_2_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '37.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")         
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '37.png'))                              
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                              
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Beta Group
@@ -1049,10 +1049,10 @@ def test_period_2_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '37.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '37.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Gamma Inc.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[5]")
@@ -1061,10 +1061,10 @@ def test_period_2_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '37.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '37.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                                     
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Delta Brothers
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[6]")
@@ -1073,10 +1073,10 @@ def test_period_2_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '37.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("revenue Testing Passed")         
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '37.png'))                              
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                              
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Table 4 Market Share Report (Unit Wise)
@@ -1099,10 +1099,10 @@ def test_period_2_table_4(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '38.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("Market Share values(Unit wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '38.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Unit wise) add up to {total_percentage}%"       
 
  
@@ -1116,10 +1116,10 @@ def test_period_2_table_4(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '38.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '38.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))
             assert False,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 5 Market Share Report (Revenue Wise)
@@ -1142,10 +1142,10 @@ def test_period_2_table_5(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '39.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
         print("Market Share values(Revenue wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '39.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Revenue wise) add up to {total_percentage}%"
 
     expected_range_min = 0
@@ -1158,10 +1158,10 @@ def test_period_2_table_5(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '39.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_2.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '39.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))
             assert False,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 6 Market Report
@@ -1247,10 +1247,10 @@ def test_period_3_market_share(driver):
     print(market_share.text)
     if expected_min_market_share <= actual_market_share <= expected_max_market_share:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '40.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("Market share is within the expected range")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '40.png'))                                      
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                      
     assert expected_min_market_share <= actual_market_share <= expected_max_market_share, f"Text verification failed in Period 3. Expected:0% to 100% Actual: '{market_share.text}'"
 
     #Sliders
@@ -1273,10 +1273,10 @@ def test_period_3_sliders_default_value(driver):
     non_zero_set = set(non_zero_values)
     if non_zero_set == expected_values:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '41.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("Sliders values matched in period 3")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '41.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))    
     assert non_zero_set == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_set}"
 
 def test_period_3_projected_revenue(driver):  
@@ -1288,10 +1288,10 @@ def test_period_3_projected_revenue(driver):
     print(actual_proj_rev)
     if actual_proj_rev >= expected_min_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '42.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("Projected revenue Testing Passed in Period 3¸") 
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '42.png'))                                       
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                       
     assert actual_proj_rev >= expected_min_proj_rev, f"Projected revenue not matched  . Expected: '{expected_min_proj_rev}', Actual: '{actual_proj_rev}'"
 
     # click on Expand all in Period-3
@@ -1315,10 +1315,10 @@ def test_period_3_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '43.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '43.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                     
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 2
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[3]")
@@ -1327,10 +1327,10 @@ def test_period_3_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '43.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '43.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 3(E)
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[2]")
@@ -1339,10 +1339,10 @@ def test_period_3_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '43.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")        
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '43.png'))                               
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                               
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -1359,10 +1359,10 @@ def test_period_3_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '44.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '44.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                    
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #month 2
@@ -1372,10 +1372,10 @@ def test_period_3_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '44.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")     
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '44.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                  
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #month 3(E)
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table/tr[2]/td[2]")
@@ -1384,10 +1384,10 @@ def test_period_3_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '44.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")     
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '44.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                  
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -1405,10 +1405,10 @@ def test_period_3_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '45.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")       
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '45.png'))                                
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Alpha Corp.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[3]")
@@ -1417,10 +1417,10 @@ def test_period_3_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '45.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '45.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                   
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Beta Group
@@ -1430,10 +1430,10 @@ def test_period_3_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '45.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")      
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '45.png'))                                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                 
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Gamma Inc.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[5]")
@@ -1442,10 +1442,10 @@ def test_period_3_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '45.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '45.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Delta Brothers
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[6]")
@@ -1454,10 +1454,10 @@ def test_period_3_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '45.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("revenue Testing Passed")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '45.png'))                                       
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))                                       
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Table 4 Market Share Report (Unit Wise)
@@ -1480,10 +1480,10 @@ def test_period_3_table_4(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '46.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("Market Share values(Unit wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '46.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Unit wise) add up to {total_percentage}%"       
 
 
@@ -1497,10 +1497,10 @@ def test_period_3_table_4(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '46.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '46.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))
             assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 5 Market Share Report (Revenue Wise)
@@ -1523,10 +1523,10 @@ def test_period_3_table_5(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '47.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
         print("Market Share values(Revenue wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '47.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Revenue wise) add up to {total_percentage}%"      
 
     expected_range_min = 0
@@ -1539,10 +1539,10 @@ def test_period_3_table_5(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '47.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_3.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '47.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_3.png'))
             assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 6 Market Report
@@ -1626,10 +1626,10 @@ def test_period_4_market_share(driver):
     print(market_share.text)
     if expected_min_market_share <= actual_market_share <= expected_max_market_share:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '48.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("Market share is within the expected range")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '48.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                     
     assert expected_min_market_share <= actual_market_share <= expected_max_market_share, f"Text verification failed in Period 4. Expected:0% to 100% Actual: '{market_share.text}'"
 
     #Sliders
@@ -1652,10 +1652,10 @@ def test_period_4_sliders_default_value(driver):
     non_zero_set = set(non_zero_values)
     if non_zero_set == expected_values:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '49.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("Sliders values matched in period 4")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '49.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))    
     assert non_zero_set == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_set}"
 
 def test_period_4_projected_revenue(driver):  
@@ -1667,10 +1667,10 @@ def test_period_4_projected_revenue(driver):
     print(actual_proj_rev)
     if actual_proj_rev >= expected_min_proj_rev:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '50.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("Projected revenue Testing Passed in Period 4")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '50.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                     
     assert actual_proj_rev >= expected_min_proj_rev, f"Projected revenue not matched  . Expected: '{expected_min_proj_rev}', Actual: '{actual_proj_rev}'"
 
     # click on Expand all in Period-3
@@ -1694,10 +1694,10 @@ def test_period_4_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '51.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")          
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '51.png'))                             
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                             
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 2
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[4]")
@@ -1706,10 +1706,10 @@ def test_period_4_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '51.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '51.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                   
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 3
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[3]")
@@ -1718,10 +1718,10 @@ def test_period_4_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '51.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed") 
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '51.png'))                                      
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                      
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 4(E)
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[2]")
@@ -1730,10 +1730,10 @@ def test_period_4_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '51.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '51.png'))                                       
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                       
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -1750,10 +1750,10 @@ def test_period_4_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '52.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")          
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '52.png'))                         
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                         
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #month 2
@@ -1763,10 +1763,10 @@ def test_period_4_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '52.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '52.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                    
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #month 3
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table/tr[2]/td[3]")
@@ -1775,10 +1775,10 @@ def test_period_4_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '52.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '52.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                     
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #month 4(E)
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table/tr[2]/td[2]")
@@ -1787,10 +1787,10 @@ def test_period_4_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '52.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")     
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '52.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                  
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -1807,10 +1807,10 @@ def test_period_4_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '53.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")        
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '53.png'))                               
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                               
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Alpha Corp.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[3]")
@@ -1819,10 +1819,10 @@ def test_period_4_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '53.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '53.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Beta Group
@@ -1832,10 +1832,10 @@ def test_period_4_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '53.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed") 
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '53.png'))                                      
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                      
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Gamma Inc.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[5]")
@@ -1844,10 +1844,10 @@ def test_period_4_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '53.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '53.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                     
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Delta Brothers
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[4]/div[2]/section/div/div/table/tr[2]/td[6]")
@@ -1856,10 +1856,10 @@ def test_period_4_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '53.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '53.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Table 4 Market Share Report (Unit Wise)
@@ -1882,10 +1882,10 @@ def test_period_4_table_4(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '54.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("Market Share values(Unit wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '54.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Unit wise) add up to {total_percentage}%"       
 
 
@@ -1899,10 +1899,10 @@ def test_period_4_table_4(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '54.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '54.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))
             assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 5 Market Share Report (Revenue Wise)
@@ -1925,10 +1925,10 @@ def test_period_4_table_5(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '55.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
         print("Market Share values(Revenue wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '55.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Revenue wise) add up to {total_percentage}%"        
 
     expected_range_min = 0
@@ -1940,10 +1940,10 @@ def test_period_4_table_5(driver):
     # Check if the other company values are within the expected range
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
-            driver.save_screenshot(os.path.join(screenshot_true, '55.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Period_4.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '55.png'))
+            driver.save_screenshot(os.path.join(screenshot_false, 'Period_4.png'))
             assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 6 Market Report
@@ -2020,10 +2020,10 @@ def test_final_reports_content_message(driver):
     print(actual_content)
     if actual_content == expected_content:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '56.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("Content is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '56.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))    
     assert actual_content == expected_content, f"content verification failed. Expected: '{expected_content}', Actual: '{actual_content}'"
 
 def test_final_reports_expand_all(driver):  
@@ -2046,10 +2046,10 @@ def test_final_reports_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '57.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 1 : revenue Testing Passed")      
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '57.png'))                                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                 
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 2
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[2]/div[2]/section/div/div[2]/table/tr[2]/td[4]")
@@ -2058,10 +2058,10 @@ def test_final_reports_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '57.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 2 : revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '57.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                     
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 3
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[2]/div[2]/section/div/div[2]/table/tr[2]/td[3]")
@@ -2070,10 +2070,10 @@ def test_final_reports_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '57.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 3 : revenue Testing Passed")  
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '57.png'))                                     
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                     
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Month 4
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[2]/div[2]/section/div/div[2]/table/tr[2]/td[2]")
@@ -2082,10 +2082,10 @@ def test_final_reports_table_1(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '57.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 4 : revenue Testing Passed")      
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '57.png'))                                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                 
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -2102,10 +2102,10 @@ def test_final_reports_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '58.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 1 : revenue Testing Passed")      
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '58.png'))                                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                 
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #month 2
@@ -2115,10 +2115,10 @@ def test_final_reports_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '58.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 2 : revenue Testing Passed")     
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '58.png'))                                  
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                  
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #month 3
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[2]/div[3]/section/div/div/table/tr[2]/td[3]")
@@ -2127,10 +2127,10 @@ def test_final_reports_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '58.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 3 : revenue Testing Passed")    
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '58.png'))                                   
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                   
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #month 4
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[2]/div[3]/section/div/div/table/tr[2]/td[2]")
@@ -2139,10 +2139,10 @@ def test_final_reports_table_2(driver):
     print(actual_revenue)
     if actual_revenue == expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '58.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("month 4 : revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '58.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                    
     assert actual_revenue == expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
 
@@ -2159,10 +2159,10 @@ def test_final_reports_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '59.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("revenue Testing Passed")      
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '59.png'))                                 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                 
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Alpha Corp.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[3]/div[2]/section/div/div/table/tr[2]/td[3]")
@@ -2171,10 +2171,10 @@ def test_final_reports_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '59.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '59.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Beta Group
@@ -2184,10 +2184,10 @@ def test_final_reports_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '59.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '59.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Gamma Inc.
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[3]/div[2]/section/div/div/table/tr[2]/td[5]")
@@ -2196,10 +2196,10 @@ def test_final_reports_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '59.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '59.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
     #Delta Brothers
     revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div[3]/div[2]/section/div/div/table/tr[2]/td[6]")
@@ -2208,10 +2208,10 @@ def test_final_reports_table_3(driver):
     print(actual_revenue)
     if actual_revenue >= expected_min_revenue:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '59.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("revenue Testing Passed")   
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '59.png'))                                    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))                                    
     assert actual_revenue >= expected_min_revenue, f"Revenue not matched . Expected: '{expected_min_revenue}', Actual: '{actual_revenue}'"
 
     #Table 4 Market Share Report (Unit Wise)
@@ -2238,10 +2238,10 @@ def test_final_reports_table_4(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '60.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("Market Share values(Unit wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '60.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Unit wise) add up to {total_percentage}%"       
 
 
@@ -2255,10 +2255,10 @@ def test_final_reports_table_4(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '60.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '60.png'))    
+            driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))    
         assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 5 Market Share Report (Revenue Wise)
@@ -2281,10 +2281,10 @@ def test_final_reports_table_5(driver):
     # Check if the total percentage equals 100%
     if abs(total_percentage - 100.0) <= tolerance:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '61.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
         print("Market Share values(Revenue wise) add up to 100%")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '61.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))    
     assert abs(total_percentage - 100.0) <= tolerance,f"Error : Market Share values(Revenue wise) add up to {total_percentage}%"    
 
     expected_range_min = 0
@@ -2297,10 +2297,10 @@ def test_final_reports_table_5(driver):
     for value in other_values:
         if expected_range_min <= value <= expected_range_max:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '61.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Final_report.png'))
             print(f'Value {value} is within the expected range (0% to 50%).')
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '61.png'))    
+            driver.save_screenshot(os.path.join(screenshot_false, 'Final_report.png'))    
         assert expected_range_min <= value <= expected_range_max,f'Error : Value {value} is outside the expected range. Expected: 0% to 50%, Actual: {value}'
 
     #Table 6 Market Report
@@ -2335,10 +2335,10 @@ def test_target_vs_actual_heading(driver):
     print(actual_heading)
     if actual_heading == expected_heading:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '62.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         print("Heading is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '62.png')) 
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png')) 
     assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
 
     ###Avg prices
@@ -2355,10 +2355,10 @@ def test_target_vs_actual_your_avg_price(driver):
     print(zyngbeanz_avg_price)
     if your_avg_price == zyngbeanz_avg_price:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '63.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         print("Your Avg price matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '63.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))
     assert your_avg_price == zyngbeanz_avg_price,"Your avg prices are not matched"  
 
 
@@ -2375,10 +2375,10 @@ def test_target_vs_actual_others_avg_price(driver):
     print(other_comp_avg_price)
     if others_avg_price == other_comp_avg_price:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '64.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         print("Others Avg price matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '64.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))
     assert others_avg_price == other_comp_avg_price,"Others avg prices are not matched"  
 
 
@@ -2391,9 +2391,9 @@ def test_target_vs_actual_target_kpi_1(driver):
     Target_kpi1 = float(Target_kpi1)
     if Target_kpi1 == expected_target_kpi1:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '65.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '65.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
     assert Target_kpi1 == expected_target_kpi1,"Target dismatched"
 def test_target_vs_actual_achieved_kpi_1(driver):  
     if popup_detected:
@@ -2402,9 +2402,9 @@ def test_target_vs_actual_achieved_kpi_1(driver):
     achieved_kpi1 = float(achieved_kpi1)
     if achieved_kpi1 == final_market_share_value[0]:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '66.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '66.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
     assert achieved_kpi1 == final_market_share_value[0],"Achieved dismatched"
 
 def test_target_vs_actual_difference_in_kpi_1(driver):  
@@ -2423,9 +2423,9 @@ def test_target_vs_actual_difference_in_kpi_1(driver):
     print(abs(Target_kpi1-achieved_kpi1))
     if math.isclose(difference_in_kpi1, absolute_difference1, rel_tol=tolerance):
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '67.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '67.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
     assert math.isclose(difference_in_kpi1, absolute_difference1, rel_tol=tolerance),"Difference dismatched"
 
 
@@ -2438,9 +2438,9 @@ def test_target_vs_actual_target_kpi_2(driver):
 
     if Target_kpi2 == expected_target_kpi2:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '68.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '68.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
     assert Target_kpi2 == expected_target_kpi2,"Target dismatched"
 
 def test_target_vs_actual_difference_in_kpi_2(driver):  
@@ -2458,9 +2458,9 @@ def test_target_vs_actual_difference_in_kpi_2(driver):
 
     if math.isclose(difference_in_kpi2, absolute_difference2, rel_tol=tolerance):
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '69.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '69.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
     assert math.isclose(difference_in_kpi2, absolute_difference2, rel_tol=tolerance),"Difference dismatched"
 
 def test_target_vs_actual_target_message(driver):   
@@ -2480,25 +2480,25 @@ def test_target_vs_actual_target_message(driver):
     if KPI_1_gettext != KPI_2_gettext:
         if real_final_message == expected_final_missed_message:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '70.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '70.png'))    
+            driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
         assert real_final_message == expected_final_missed_message, "message mismatched"
 
     elif KPI_1_gettext == KPI_2_gettext == 'Missed':
         if real_final_message == expected_final_missed_message:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '70.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '70.png'))    
+            driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
         assert real_final_message == expected_final_missed_message, "message mismatched"
 
     elif KPI_1_gettext == KPI_2_gettext == 'Exceeded':
         if real_final_message == expected_final_exceeded_message:
             assert True
-            driver.save_screenshot(os.path.join(screenshot_true, '70.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'Target_vs_actual.png'))
         else:
-            driver.save_screenshot(os.path.join(screenshot_false, '70.png'))    
+            driver.save_screenshot(os.path.join(screenshot_false, 'Target_vs_actual.png'))    
         assert real_final_message == expected_final_exceeded_message, "message mismatched"
 
     else:
@@ -2526,10 +2526,10 @@ def test_your_performance(driver):
     print(actual_heading)
     if actual_heading == expected_heading:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '71.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'your_performance.png'))
         print("Heading is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '71.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'your_performance.png'))    
     assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
     
 def test_your_performance_clicked_leaderboard(driver):   
@@ -2563,13 +2563,13 @@ def test_leaderboard(driver):
         name = row.find_elements(By.TAG_NAME, 'td')[1].text
         if 'You' in name:
             assert 'You' in name
-            driver.save_screenshot(os.path.join(screenshot_true, '72.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'leaderboard.png'))
             rank = row.find_elements(By.TAG_NAME, 'td')[0].text
             score = row.find_elements(By.TAG_NAME, 'td')[2].text
             name_found = True
             print(f"Name: {name}, Rank: {rank}, Score: {score}")
     if name_found == False:
-        driver.save_screenshot(os.path.join(screenshot_false, '72.png'))     
+        driver.save_screenshot(os.path.join(screenshot_false, 'leaderboard.png'))     
     assert name_found,"Something Wrong , Your name is not in leaderboard"
 
     print("* KPI 2 *")
@@ -2589,13 +2589,13 @@ def test_leaderboard(driver):
         name = row.find_elements(By.TAG_NAME, 'td')[1].text
         if 'You' in name:
             assert 'You' in name
-            driver.save_screenshot(os.path.join(screenshot_true, '72.png'))
+            driver.save_screenshot(os.path.join(screenshot_true, 'leaderboard.png'))
             rank = row.find_elements(By.TAG_NAME, 'td')[0].text
             score = row.find_elements(By.TAG_NAME, 'td')[2].text
             name_found = True
             print(f"Name: {name}, Rank: {rank}, Score: {score}")
     if name_found == False:
-        driver.save_screenshot(os.path.join(screenshot_false, '72.png'))      
+        driver.save_screenshot(os.path.join(screenshot_false, 'leaderboard.png'))      
     assert name_found,"Something Wrong , Your name is not in leaderboard"
 
 
@@ -2620,10 +2620,10 @@ def test_market_deepdive(driver):
     print(actual_heading)
     if actual_heading == expected_heading:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '73.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'market_deepdive.png'))
         print("Heading is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '73.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'market_deepdive.png'))
     assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
 
     text1 = driver.find_element(By.XPATH,value="//*[@id='sib-de-brief-page-4']/div/div[8]/div[1]")
@@ -2631,11 +2631,11 @@ def test_market_deepdive(driver):
     expected_text1 = "Final Market Share (Units)"
     print(actual_text1)
     if actual_text1 == expected_text1:
-        driver.save_screenshot(os.path.join(screenshot_true, '73.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'market_deepdive.png'))
         assert True
         print("Text is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '73.png')) 
+        driver.save_screenshot(os.path.join(screenshot_false, 'market_deepdive.png')) 
     assert actual_text1 == expected_text1, f"Text verification failed. Expected: '{expected_text1}', Actual: '{actual_text1}'"
 
     text2 = driver.find_element(By.XPATH,value="//*[@id='sib-de-brief-page-4']/div/div[9]/div[1]")
@@ -2644,10 +2644,10 @@ def test_market_deepdive(driver):
     print(actual_text2)
     if actual_text2 == expected_text2:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '73.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'market_deepdive.png'))
         print("Text is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '73.png'))   
+        driver.save_screenshot(os.path.join(screenshot_false, 'market_deepdive.png'))   
     assert actual_text2 == expected_text2, f"Text verification failed. Expected: '{expected_text2}', Actual: '{actual_text2}'"
 
     #click on next
@@ -2670,10 +2670,10 @@ def test_ending_page(driver):
     print(actual_heading)
     if actual_heading == expected_heading:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '74.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'second_last_page.png'))
         print("Heading is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '74.png'))
+        driver.save_screenshot(os.path.join(screenshot_false, 'second_last_page.png'))
     assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
 
 def test_ending_page_play_video(driver): 
@@ -2699,9 +2699,9 @@ def test_ending_page_video_transcript(driver):
     print(f"Length of text on the page: {text_length} characters")
     if text_length == expected_textlength:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '75.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'second_last_page.png'))
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '75.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'second_last_page.png'))    
     assert text_length == expected_textlength,"Video Transcript Length mismatched"   
 
 def test_ending_page_next_button(driver): 
@@ -2725,10 +2725,10 @@ def test_end_message(driver):
     print(actual_msg)
     if actual_msg == expected_msg:
         assert True
-        driver.save_screenshot(os.path.join(screenshot_true, '76.png'))
+        driver.save_screenshot(os.path.join(screenshot_true, 'last_page.png'))
         print("Text is matched ")
     else:
-        driver.save_screenshot(os.path.join(screenshot_false, '76.png'))    
+        driver.save_screenshot(os.path.join(screenshot_false, 'last_page.png'))    
     assert actual_msg == expected_msg, f"Text verification failed. Expected: '{expected_msg}', Actual: '{actual_msg}'"
 def test_click_on_rewatch(driver):
     if popup_detected:
