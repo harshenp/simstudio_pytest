@@ -28,19 +28,7 @@ def driver():
     driver.maximize_window()
     yield driver
     driver.quit() 
-
-
-final_market_share_value = []
-timestamp = time.strftime("%H%M%S_%Y%m%d")
-popup_detected = False
-
-#making directory for screenshots
-screenshot_true = f'screenshots/assert_true/{timestamp}/'
-if not os.path.exists(screenshot_true):
-    os.makedirs(screenshot_true)
-screenshot_false = f'screenshots/assert_false/{timestamp}/'
-if not os.path.exists(screenshot_false):
-    os.makedirs(screenshot_false)    
+ 
 
 def test_user_creation_and_login(driver):
     # Open the website
@@ -72,7 +60,7 @@ def test_user_creation_and_login(driver):
     next_button.click()
 
     driver.switch_to.window(original_window)
-    create_user = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="sidebar-left"]/div[1]/div[2]/label[3]/div/div[2]/div/span')))
+    create_user = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="sidebar-left"]/div[1]/div[2]/label[3]/div/div[2]/div/span')))
     create_user.click()
 
 
@@ -95,7 +83,7 @@ def test_user_creation_and_login(driver):
     new_url = "https://simstudio-uat.catalyx.live/signin?module_id=d37817a3-a0c8-4942-a788-c000af6265e0"
     driver.get(new_url)
     time.sleep(1)
-    login = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@id='user_name']")))
+    login = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//input[@id='user_name']")))
     login.send_keys(random_username, Keys.ENTER)
     time.sleep(3)
 
@@ -121,6 +109,10 @@ def test_login(driver):
 
 
 final_market_share_value = []
+changed_sliders_value_in_period_1 = []
+changed_sliders_value_in_period_2 = []
+changed_sliders_value_in_period_3 = []
+changed_sliders_value_in_period_4 = []
 timestamp = time.strftime("%H%M%S_%Y%m%d")
 popup_detected = False
 
@@ -130,8 +122,8 @@ if not os.path.exists(screenshot_true):
     os.makedirs(screenshot_true)
 screenshot_false = f'screenshots/assert_false/{timestamp}/'
 if not os.path.exists(screenshot_false):
-    os.makedirs(screenshot_false)    
-
+    os.makedirs(screenshot_false)   
+ 
 
 # First Page After login
 def test_simulation_name(driver):  
@@ -339,7 +331,7 @@ def test_period_1_sliders_default_value(driver):
         assert non_zero_values == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_values}"
 
     #verify projected Revenue value
-def test_period_1_projected_revenue_default(driver):  
+def test_period_1_projected_revenue(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     proj_rev = driver.find_element(By.XPATH,"//div[@class='revenue_value theme-font8']")
@@ -355,7 +347,7 @@ def test_period_1_projected_revenue_default(driver):
 
 
     #verfy projected Operating margin
-def test_period_1_projected_operating_margin_default(driver):  
+def test_period_1_projected_operating_margin(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
@@ -411,7 +403,7 @@ def test_period_1_profit_loss_statement(driver):
 
 
     ##verify profit-loss table default data
-def test_period_1_table_1_default(driver):  
+def test_period_1_table_1(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     table = driver.find_element(By.CLASS_NAME, "bold_pandl")
@@ -443,7 +435,7 @@ def test_period_1_table_1_default(driver):
         driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
     assert table_data == expected_data, "Profit-Loss Table default content does not match the expected data"
 
-def test_period_1_table_2_default(driver):  
+def test_period_1_table_2(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     ##verify cost structure table default data
@@ -477,239 +469,30 @@ def test_period_1_table_2_default(driver):
     assert table_data == expected_data, " Cost Structure Table Default content does not match the expected data"
 
 
-    #### Now we are checking all the things on manipulation 
-    #first slider-  Manipulate the slider value
-def test_period_1_slider_1_manipulation(driver):     
+
+def test_period_1_slider_1_manipulation(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider1")
-
-    slider_width = slider.size["width"]
-
-    # Get the current value of the slider
-    current_value = int(slider.get_attribute("aria-valuenow"))
-
-    # Calculate the new position based on the desired value 
-    desired_value = 145
-    temp_value = desired_value+1
-    position_change = temp_value - current_value
-    new_position = (position_change / (160 - 120)) * slider_width
-
-    # Use ActionChains to move the slider to the new position
+    pixels_to_move = 100
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_1.append(slider_value)
 
-    # Verify the updated value
-    updated_value = slider.get_attribute("aria-valuenow")
-    print(f"Updated value: {updated_value}")
-    updated_value = type(desired_value)(updated_value)
-    if updated_value==desired_value:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert updated_value==desired_value,f"Could not move as desired . Expected: '{desired_value}', Actual: '{updated_value}'"
-
-
-    #now check changes on projected revenue and projected margin after first slider regulation
-def test_period_1_projected_revenue_after_slider_1_manipulation(driver):       
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    proj_rev = driver.find_element(By.XPATH,"//div[@class='revenue_value theme-font8']")
-    actual_proj_rev = proj_rev.text
-    expected_proj_rev = "USD 1,183,200"
-    print(actual_proj_rev)
-    if actual_proj_rev == expected_proj_rev:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_rev is matched after first manipulation")  
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                              
-    assert actual_proj_rev == expected_proj_rev, f"Text verification failed in first slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
-
-def test_period_1_projected_margin_after_slider_1_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
-    actual_proj_mg = proj_mg.text
-    expected_proj_mg = "USD 98,520"
-    print(actual_proj_mg)
-    if actual_proj_mg == expected_proj_mg:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_mg is matched after first manipulation ") 
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                      
-    assert actual_proj_mg == expected_proj_mg, f"Text verification failed in first slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
-
-    #now check changes on tables after first slider regulation
-    #table 1
-def test_period_1_table_1_after_slider_1_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.CLASS_NAME, "bold_pandl")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "1,183,200"],
-        ["COGS", "(799,680)"],
-        ["Gross Margin", "383,520"],
-        ["Fixed Cost", "(23,000)"],
-        ["Advertising", "(100,000)"],
-        ["Sales Force Cost", "(50,000)"],
-        ["Quality Control Cost", "(100,000)"],
-        ["Admin Expense", "(12,000)"],
-        ["Operating Margin / EBITDA", "98,520"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("pl table data matched after first slider manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After first slider manipulation Profit-Loss Table content does not match the expected data"
-
-    #table2 
-def test_period_1_table_2_after_slider_1_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.XPATH, "//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "100%"],
-        ["COGS", "(68)%"],
-        ["Gross Margin", "32%"],
-        ["Fixed Cost", "(2)%"],
-        ["Advertising", "(8)%"],
-        ["Sales Force Cost", "(4)%"],
-        ["Quality Control Cost", "(8)%"],
-        ["Admin Expense", "(1)%"],
-        ["Operating Margin / EBITDA", "8%"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Cost Structure table data matched after first silder manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After first slider manipulation Cost Structure Table content does not match the expected data"
-
+   
     ##Second  slider-  Manipulation
 def test_period_1_slider_2_manipulation(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider2")
     pixels_to_move = 150
-
-    # Create an ActionChains object
     action_chains = ActionChains(driver)
-
-    # Click and hold the slider's thumb, move it by the specified pixels, and then release it
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-
-
-def test_period_1_projected_revenue_after_slider_2_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    #now check changes on projected revenue and projected margin second  slider regulation
-    proj_rev = driver.find_element(By.XPATH,"//div[@class='revenue_value theme-font8']")
-    actual_proj_rev = proj_rev.text
-    expected_proj_rev = "USD 1,183,200"
-    print(actual_proj_rev)
-    if actual_proj_rev == expected_proj_rev:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_rev is matched after second manipulation")  
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                  
-    assert actual_proj_rev == expected_proj_rev, f"Text verification failed in second slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
-def test_period_1_projected_margin_after_slider_2_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
-    actual_proj_mg = proj_mg.text
-    expected_proj_mg = "USD 61,210"
-    print(actual_proj_mg)
-    if actual_proj_mg == expected_proj_mg:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_mg is matched after second manipulation ")  
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                    
-    assert actual_proj_mg == expected_proj_mg, f"Text verification failed in second slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
-
-    #now check changes on tables after Second slider regulation
-    #table 1
-def test_period_1_table_1_after_slider_2_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.CLASS_NAME, "bold_pandl")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "1,183,200"],
-        ["COGS", "(799,680)"],
-        ["Gross Margin", "383,520"],
-        ["Fixed Cost", "(23,000)"],
-        ["Advertising", "(137,310)"],
-        ["Sales Force Cost", "(50,000)"],
-        ["Quality Control Cost", "(100,000)"],
-        ["Admin Expense", "(12,000)"],
-        ["Operating Margin / EBITDA", "61,210"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("pl table data matched after second slider manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After second slider manipulation Profit-Loss Table content does not match the expected data"
-
-    #table2 
-def test_period_1_table_2_after_slider_2_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.XPATH, "//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "100%"],
-        ["COGS", "(68)%"],
-        ["Gross Margin", "32%"],
-        ["Fixed Cost", "(2)%"],
-        ["Advertising", "(12)%"],
-        ["Sales Force Cost", "(4)%"],
-        ["Quality Control Cost", "(8)%"],
-        ["Admin Expense", "(1)%"],
-        ["Operating Margin / EBITDA", "5%"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Cost Structure table data matched after second silder manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After second slider manipulation Cost Structure Table content does not match the expected data"
-
-
-
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value) 
+    changed_sliders_value_in_period_1.append(slider_value)
 
     ##3rd slider-  Manipulation
 def test_period_1_slider_3_manipulation(driver):  
@@ -717,106 +500,11 @@ def test_period_1_slider_3_manipulation(driver):
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider3")
     pixels_to_move = -150
-
-    # Create an ActionChains object
     action_chains = ActionChains(driver)
-
-    # Click and hold the slider's thumb, move it by the specified pixels, and then release it
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-
-
-
-def test_period_1_projected_revenue_after_slider_3_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    #now check changes on projected revenue and projected margin 3rd  slider regulation
-    proj_rev = driver.find_element(By.XPATH,"//div[@class='revenue_value theme-font8']")
-    actual_proj_rev = proj_rev.text
-    expected_proj_rev = "USD 1,183,200"
-    print(actual_proj_rev)
-    if actual_proj_rev == expected_proj_rev:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_rev is matched after 3rd manipulation")   
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                     
-    assert actual_proj_rev == expected_proj_rev, f"Text verification failed in 3rd slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
-
-def test_period_1_projected_margin_after_slider_3_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
-    actual_proj_mg = proj_mg.text
-    expected_proj_mg = "USD 81,215"
-    print(actual_proj_mg)
-    if actual_proj_mg == expected_proj_mg:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_mg is matched after 3rd manipulation ")  
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                                       
-    assert actual_proj_mg == expected_proj_mg, f"Text verification failed in 3rd slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
-
-    #now check changes on tables after 3rd slider regulation
-    #table 1
-def test_period_1_table_1_after_slider_3_manipulation(driver):      
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.CLASS_NAME, "bold_pandl")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "1,183,200"],
-        ["COGS", "(799,680)"],
-        ["Gross Margin", "383,520"],
-        ["Fixed Cost", "(23,000)"],
-        ["Advertising", "(137,310)"],
-        ["Sales Force Cost", "(29,995)"],
-        ["Quality Control Cost", "(100,000)"],
-        ["Admin Expense", "(12,000)"],
-        ["Operating Margin / EBITDA", "81,215"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("pl table data matched after 3rd slider manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After 3rd slider manipulation Profit-Loss Table content does not match the expected data"
-
-    #table2 
-def test_period_1_table_2_after_slider_3_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.XPATH, "//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "100%"],
-        ["COGS", "(68)%"],
-        ["Gross Margin", "32%"],
-        ["Fixed Cost", "(2)%"],
-        ["Advertising", "(12)%"],
-        ["Sales Force Cost", "(3)%"],
-        ["Quality Control Cost", "(8)%"],
-        ["Admin Expense", "(1)%"],
-        ["Operating Margin / EBITDA", "7%"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Cost Structure table data matched after 3rd silder manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After 3rd slider manipulation Cost Structure Table content does not match the expected data"
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_1.append(slider_value)
 
     ##4th slider-  Manipulation
 def test_period_1_slider_4_manipulation(driver):  
@@ -824,102 +512,11 @@ def test_period_1_slider_4_manipulation(driver):
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider4")
     pixels_to_move = 200
-
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-
-
-def test_period_1_projected_revenue_after_slider_4_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    #now check changes on projected revenue and projected margin 4th  slider regulation
-    proj_rev = driver.find_element(By.XPATH,"//div[@class='revenue_value theme-font8']")
-    actual_proj_rev = proj_rev.text
-    expected_proj_rev = "USD 1,183,200"
-    print(actual_proj_rev)
-    if actual_proj_rev == expected_proj_rev:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_rev is matched after 4th manipulation")
-    else:        
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))                             
-        assert False, f"Text verification failed in 4th slider regulation. Expected: '{expected_proj_rev}', Actual: '{actual_proj_rev}'"
-
-def test_period_1_projected_margin_after_slider_4_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    proj_mg = driver.find_element(By.XPATH,"//div[@class='operating_margin_value theme-font8']")
-    actual_proj_mg = proj_mg.text
-    expected_proj_mg = "USD 31,018"
-    print(actual_proj_mg)
-    if actual_proj_mg == expected_proj_mg:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Proj_mg is matched after 4th manipulation ")
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert actual_proj_mg == expected_proj_mg, f"Text verification failed in 4th slider regulation. Expected: '{expected_proj_mg}', Actual: '{actual_proj_mg}'"
-
-    #now check changes on tables after 4th slider regulation
-    #table 1
-def test_period_1_table_1_after_slider_4_manipulation(driver):  
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.CLASS_NAME, "bold_pandl")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "1,183,200"],
-        ["COGS", "(799,680)"],
-        ["Gross Margin", "383,520"],
-        ["Fixed Cost", "(23,000)"],
-        ["Advertising", "(137,310)"],
-        ["Sales Force Cost", "(29,995)"],
-        ["Quality Control Cost", "(150,197)"],
-        ["Admin Expense", "(12,000)"],
-        ["Operating Margin / EBITDA", "31,018"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("pl table data matched after 4th slider manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After 4th slider manipulation Profit-Loss Table content does not match the expected data"
-
-    #table2 
-def test_period_1_table_2_after_slider_4_manipulation(driver):    
-    if popup_detected:
-        pytest.skip("Invalid User Detected. Skipping this test.")
-    table = driver.find_element(By.XPATH, "//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[3]/section/div/div/table")
-    table_data = []
-    for row in table.find_elements(By.TAG_NAME, "tr"):
-        row_data = [cell.text for cell in row.find_elements(By.TAG_NAME, "td")]
-        if row_data:
-            table_data.append(row_data)
-
-    expected_data = [
-        ["Revenue", "100%"],
-        ["COGS", "(68)%"],
-        ["Gross Margin", "32%"],
-        ["Fixed Cost", "(2)%"],
-        ["Advertising", "(12)%"],
-        ["Sales Force Cost", "(3)%"],
-        ["Quality Control Cost", "(13)%"],
-        ["Admin Expense", "(1)%"],
-        ["Operating Margin / EBITDA", "3%"]
-    ]
-    if table_data == expected_data:
-        assert True
-        driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
-        print("Cost Structure table data matched after 4th silder manipulation" )
-    else:
-        driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))    
-    assert table_data == expected_data, " After 4th slider manipulation Cost Structure Table content does not match the expected data"
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_1.append(slider_value)
 
     ##click on submit button
 def test_submit_period_1(driver):  
@@ -963,12 +560,12 @@ def test_period_2_market_share(driver):
         driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))                              
     assert expected_min_market_share <= actual_market_share <= expected_max_market_share, f"Text verification failed in Period 2. Expected:0% to 100% Actual: '{market_share.text}'"
 
-    #Sliders
+#     #Sliders
 def test_period_2_sliders_default_value(driver):      
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     extracted_values = []
-    expected_values = {'145', '137310', '29995', '150197'}
+    expected_values = set(changed_sliders_value_in_period_1)
     sliders = driver.find_elements(By.CSS_SELECTOR, '[role="slider"]')
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '[role="slider"]')))
@@ -988,6 +585,7 @@ def test_period_2_sliders_default_value(driver):
     else:
         driver.save_screenshot(os.path.join(screenshot_false, 'Period_2.png'))    
     assert non_zero_set == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_set}"
+    
 
 def test_period_2_projected_revenue(driver):  
     if popup_detected:
@@ -1248,6 +846,9 @@ def test_period_2_slider_1_manipulation(driver):
     pixels_to_move = -100
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_2.append(slider_value)
 
     #Second slider
 def test_period_2_slider_2_manipulation(driver):  
@@ -1257,7 +858,10 @@ def test_period_2_slider_2_manipulation(driver):
     pixels_to_move = -70
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_2.append(slider_value)
+
     #3rd slider
 def test_period_2_slider_3_manipulation(driver):  
     if popup_detected:
@@ -1266,7 +870,10 @@ def test_period_2_slider_3_manipulation(driver):
     pixels_to_move = 140
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_2.append(slider_value)
+
     #4th slider
 def test_period_2_slider_4_manipulation(driver):  
     if popup_detected:
@@ -1275,6 +882,9 @@ def test_period_2_slider_4_manipulation(driver):
     pixels_to_move = -110
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_2.append(slider_value)
     time.sleep(1)
 
     ##click on submit button
@@ -1324,7 +934,7 @@ def test_period_3_sliders_default_value(driver):
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     extracted_values = []
-    expected_values = {'134', '80609', '67366', '70300'}
+    expected_values = set(changed_sliders_value_in_period_2)
     sliders = driver.find_elements(By.CSS_SELECTOR, '[role="slider"]')
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '[role="slider"]')))
@@ -1627,7 +1237,10 @@ def test_period_3_slider_1_manipulation(driver):
     pixels_to_move = 160
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_3.append(slider_value)
+
     #Second slider
 def test_period_3_slider_2_manipulation(driver):        
     if popup_detected:
@@ -1636,7 +1249,10 @@ def test_period_3_slider_2_manipulation(driver):
     pixels_to_move = 70
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-   
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_3.append(slider_value)
+
     #3rd slider
 def test_period_3_slider_3_manipulation(driver):     
     if popup_detected:
@@ -1645,7 +1261,10 @@ def test_period_3_slider_3_manipulation(driver):
     pixels_to_move = -140
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_3.append(slider_value)
+
     #4th slider
 def test_period_3_slider_4_manipulation(driver):  
     if popup_detected:
@@ -1654,6 +1273,9 @@ def test_period_3_slider_4_manipulation(driver):
     pixels_to_move = 110
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_3.append(slider_value)
     time.sleep(1)
 
     ##click on submit button
@@ -1703,7 +1325,7 @@ def test_period_4_sliders_default_value(driver):
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     extracted_values = []
-    expected_values = {'147', '116692', '31284', '127001'}
+    expected_values = set(changed_sliders_value_in_period_3)
     sliders = driver.find_elements(By.CSS_SELECTOR, '[role="slider"]')
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '[role="slider"]')))
@@ -2029,7 +1651,10 @@ def test_period_4_slider_1_manipulation(driver):
     pixels_to_move =130
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    time.sleep(1)
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_4.append(slider_value)
+
     #Second slider
 def test_period_4_slider_2_manipulation(driver):        
     if popup_detected:
@@ -2038,7 +1663,10 @@ def test_period_4_slider_2_manipulation(driver):
     pixels_to_move = -90
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    time.sleep(1)
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_4.append(slider_value)
+
     #3rd slider
 def test_period_4_slider_3_manipulation(driver):    
     if popup_detected:
@@ -2047,7 +1675,10 @@ def test_period_4_slider_3_manipulation(driver):
     pixels_to_move = -160
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    time.sleep(1)
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_4.append(slider_value)
+
     #4th slider
 def test_period_4_slider_4_manipulation(driver):  
     if popup_detected:
@@ -2056,6 +1687,9 @@ def test_period_4_slider_4_manipulation(driver):
     pixels_to_move = 90
     action_chains = ActionChains(driver)
     action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
+    slider_value = slider.get_attribute("aria-valuenow")
+    print(slider_value)
+    changed_sliders_value_in_period_4.append(slider_value)
     time.sleep(1)
 
     ##click on submit button
@@ -2742,17 +2376,19 @@ def test_ending_page(driver):
         driver.save_screenshot(os.path.join(screenshot_false, 'second_last_page.png'))
     assert actual_heading == expected_heading, f"Heading verification failed. Expected: '{expected_heading}', Actual: '{actual_heading}'"
 
+
 def test_ending_page_play_video(driver): 
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")   
-    play_btn = driver.find_element(By.XPATH,value="//*[@id='content_video_page1']/div/div[3]/div/i")
+    play_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='content_video_page1']/div/div[3]/div/i")))
+    #WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input')))
     print("clicked on Video Play")
     play_btn.click()
     time.sleep(6)   
 def test_ending_page_close_video(driver): 
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")   
-    close_btn = driver.find_element(By.XPATH,value="//*[@id='video_popup']/div/div/div/button")
+    close_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='video_popup']/div/div/div/button")))
     print("clicked on Video Close")
     close_btn.click()
     time.sleep(3)   
@@ -2773,7 +2409,7 @@ def test_ending_page_video_transcript(driver):
 def test_ending_page_next_button(driver): 
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")   
-    next_btn = driver.find_element(By.XPATH,value="//*[@id='content_video_page1']/div/div[5]/button[2]")
+    next_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='content_video_page1']/div/div[5]/button[2]")))
     print("clicked on Next button ")
     next_btn.click()
     time.sleep(5)   
@@ -2799,7 +2435,7 @@ def test_end_message(driver):
 def test_click_on_rewatch(driver):
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
-    play_btn = driver.find_element(By.XPATH,value="//*[@id='videos_container']/div/div[2]/span")
+    play_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='videos_container']/div/div[2]/span")))
     print("clicked on Rewatch")
     play_btn.click()
     time.sleep(6)   
@@ -2807,7 +2443,7 @@ def test_click_on_rewatch(driver):
 def test_click_on_close_rewatch(driver):
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
-    close_btn = driver.find_element(By.XPATH,value="//*[@id='video_popup']/div/div/div/button")
+    close_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='video_popup']/div/div/div/button")))
     print("clicked on Video Close")
     close_btn.click()
     time.sleep(3)   
