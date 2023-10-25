@@ -1,10 +1,11 @@
-#pytest main_1.py --html=report.html
+#pytest main_3.py --html=report.html
 #open report.html
-#without automatic user creation
+#with automatic user creation
 import os
 import time
 import pytest
 import math
+from faker import Faker
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -26,17 +27,67 @@ def driver():
     driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
     driver.maximize_window()
     yield driver
-    driver.quit()
+    # driver.quit() 
  
 
-def test_url_and_enter_username(driver):    
-    url = "https://simstudio-uat.catalyx.live/signin?module_id=d37817a3-a0c8-4942-a788-c000af6265e0"
-    driver.get(url)
+def test_user_creation_and_login(driver):
+    # Open the website
+    driver.get('https://simstudioadmin-uat.catalyx.live/signin')
+    original_window = driver.current_window_handle
+
+    iframe = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//iframe[@title='Sign in with Google Button']"))
+    )
+    driver.switch_to.frame(iframe)
+
+    # Locate and click the Google Sign-In button with explicit wait
+    google_sign_in_button = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//*[@id='container']/div/div[2]/span[1]"))
+    )
+    google_sign_in_button.click()
+
+    driver.switch_to.window(driver.window_handles[-1])
+
+    email_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'identifierId')))
+    email_input.send_keys('example@enparadigm.com')
+
+    next_button = driver.find_element(By.XPATH, '//*[@id="identifierNext"]')
+    next_button.click()
+
+    password_input = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input')))
+    password_input.send_keys('Password')
+    next_button = driver.find_element(By.XPATH, '//*[@id="passwordNext"]')
+    next_button.click()
+
+    driver.switch_to.window(original_window)
+    create_user = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="sidebar-left"]/div[1]/div[2]/label[3]/div/div[2]/div/span')))
+    create_user.click()
+
+
+    fake = Faker()
+    random_username = fake.email()
+    random_name = fake.name()
+    print(random_username)
+    print(random_name)
+
+    name_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="name"]')))
+    username_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="user_name"]')))
+
+    username_input.send_keys(random_username)
+    name_input.send_keys(random_name)
+
+    save_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="create_user_btn"]')))
+    save_button.click()
     time.sleep(1)
-    username = "hg40@gmail.com"
-    login = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@id='user_name']")))
-    login.send_keys(username, Keys.ENTER)
+    
+    new_url = "https://simstudio-uat.catalyx.live/signin?module_id=d37817a3-a0c8-4942-a788-c000af6265e0"
+    driver.get(new_url)
+    time.sleep(1)
+    login = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//input[@id='user_name']")))
+    login.send_keys(random_username, Keys.ENTER)
     time.sleep(3)
+
+
 
 #login
 def test_login(driver):
@@ -135,14 +186,27 @@ def test_first_page_content_intrigued(driver):
 
 
 # clicking next button 3 times to reach case summary page
-def test_click_next_button_in_initial_pages(driver):  
+def test_click_next_button_1(driver):  
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
-    for _ in range(3):
-        button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='nextButton theme-font15']")))
-        button.click()
-        print("Next button clicked")
-        time.sleep(5)
+    button = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//button[@class='nextButton theme-font15']")))
+    button.click()
+    print("Next button clicked")
+    time.sleep(7)
+def test_click_next_button_2(driver):     
+    if popup_detected:
+        pytest.skip("Invalid User Detected. Skipping this test.") 
+    button = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//button[@class='nextButton theme-font15']")))
+    button.click()
+    print("Next button clicked")
+    time.sleep(7)
+def test_click_next_button_3(driver):     
+    if popup_detected:
+        pytest.skip("Invalid User Detected. Skipping this test.") 
+    button = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//button[@class='nextButton theme-font15']")))
+    button.click()
+    print("Next button clicked")
+    time.sleep(4)
         
 
 #case summary
@@ -418,54 +482,124 @@ def test_period_1_table_2(driver):
     assert table_data == expected_data, " Cost Structure Table Default content does not match the expected data"
 
 
-
-def test_period_1_slider_1_manipulation(driver):  
+def test_period_1_slider_1_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider1")
-    pixels_to_move = 100
-    action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_1.append(slider_value)
+    desired_value = 144
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_1.append(updated_value)    
 
-   
-    ##Second  slider-  Manipulation
-def test_period_1_slider_2_manipulation(driver):  
+
+
+def test_period_1_slider_2_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider2")
-    pixels_to_move = 150
+    slider_width = slider.size["width"]
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 70815
+    temp_value = desired_value +1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value) 
-    changed_sliders_value_in_period_1.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_1.append(updated_value)    
 
-    ##3rd slider-  Manipulation
-def test_period_1_slider_3_manipulation(driver):  
+def test_period_1_slider_3_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider3")
-    pixels_to_move = -150
+    slider_width = slider.size["width"]
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 62889
+    temp_value = desired_value + 774
+    position_change = temp_value - current_value
+    new_position = (position_change /100000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_1.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_1.append(updated_value)    
 
-    ##4th slider-  Manipulation
-def test_period_1_slider_4_manipulation(driver):  
+
+def test_period_1_slider_4_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider4")
-    pixels_to_move = 200
+    slider_width = slider.size["width"]
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 83444
+    temp_value = desired_value +1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_1.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break  
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_1.append(updated_value)    
+            
+    
 
     ##click on submit button
 def test_submit_period_1(driver):  
@@ -558,7 +692,7 @@ def test_period_2_expand_all(driver):
     exp_btn = driver.find_element(By.XPATH,"//button[@id='expand_all_report']")
     exp_btn.click()
     print("Expand all clicked")
-    time.sleep(5)
+    time.sleep(2)
 
     #table 1 (Profit and loss statement)
 def test_period_2_table_1(driver):      
@@ -786,55 +920,126 @@ def test_period_2_table_6(driver):
 
 
     ###Now manipulate the slider 
-    
-    #first slider-  Manipulate the slider value
-def test_period_2_slider_1_manipulation(driver):          
+
+def test_period_2_slider_1_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider1")
-    pixels_to_move = -100
-    action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_2.append(slider_value)
+    desired_value = 138
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_2.append(updated_value)    
 
-    #Second slider
-def test_period_2_slider_2_manipulation(driver):  
+
+
+def test_period_2_slider_2_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider2")
-    pixels_to_move = -70
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 109932
+    temp_value = desired_value + 1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_2.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_2.append(updated_value)    
 
-    #3rd slider
-def test_period_2_slider_3_manipulation(driver):  
+def test_period_2_slider_3_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider3")
-    pixels_to_move = 140
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 47548
+    temp_value = desired_value + 774
+    position_change = temp_value - current_value
+    new_position = (position_change /100000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_2.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_2.append(updated_value)    
 
-    #4th slider
-def test_period_2_slider_4_manipulation(driver):  
+
+def test_period_2_slider_4_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider4")
-    pixels_to_move = -110
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 139875
+    temp_value = desired_value + 1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_2.append(slider_value)
-    time.sleep(1)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break  
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_2.append(updated_value)    
 
     ##click on submit button
 def test_submit_period_2_(driver):  
@@ -864,8 +1069,7 @@ def test_period_3_market_share(driver):
         pytest.skip("Invalid User Detected. Skipping this test.")
     print("************* Testing in Period 3 ************** ")
     #market share (Month 3)
-    time.sleep(2)
-    market_share = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/div/span")
+    market_share = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/div/span")))
     actual_market_share = float(market_share.text.strip('%'))
     expected_min_market_share = 0
     expected_max_market_share =100
@@ -926,7 +1130,7 @@ def test_period_3_expand_all(driver):
     exp_btn = driver.find_element(By.XPATH,"//button[@id='expand_all_report']")
     exp_btn.click()
     print("Expand all clicked")
-    time.sleep(5)
+    time.sleep(2)
 
     #table 1 (Profit and loss statement)
 def test_period_3_table_1(driver):  
@@ -934,7 +1138,7 @@ def test_period_3_table_1(driver):
         pytest.skip("Invalid User Detected. Skipping this test.")
     print("* Tabel 1 (Profit and loss statement) *")
     #Month 1
-    revenue = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[4]")
+    revenue = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[3]/div[3]/div/div/div[3]/div[2]/section/div/div[2]/table/tr[2]/td[4]")))
     actual_revenue = float(''.join(filter(str.isdigit, revenue.text)))
     expected_min_revenue = 0
     print(actual_revenue)
@@ -1179,53 +1383,125 @@ def test_period_3_table_6(driver):
 
 
     ###Now manipulate the slider 
-def test_period_3_slider_1_manipulation(driver):        
+def test_period_3_slider_1_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider1")
-    pixels_to_move = 160
-    action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_3.append(slider_value)
+    desired_value = 142
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_3.append(updated_value)    
 
-    #Second slider
-def test_period_3_slider_2_manipulation(driver):        
+
+
+def test_period_3_slider_2_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider2")
-    pixels_to_move = 70
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 82375
+    temp_value = desired_value +1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_3.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_3.append(updated_value)    
 
-    #3rd slider
 def test_period_3_slider_3_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider3")
-    pixels_to_move = -140
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 63755
+    temp_value = desired_value + 774
+    position_change = temp_value - current_value
+    new_position = (position_change /100000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_3.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_3.append(updated_value)    
 
-    #4th slider
-def test_period_3_slider_4_manipulation(driver):  
+
+def test_period_3_slider_4_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider4")
-    pixels_to_move = 110
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 89330
+    temp_value = desired_value +1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_3.append(slider_value)
-    time.sleep(1)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break  
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_3.append(updated_value)    
 
     ##click on submit button
 def test_submit_period_3(driver):  
@@ -1255,8 +1531,7 @@ def test_period_4_market_share(driver):
         pytest.skip("Invalid User Detected. Skipping this test.")
     print("************* Testing in Period 4 ************** ")
     #market share (Month 4)
-    time.sleep(3)
-    market_share = driver.find_element(By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/div/span")
+    market_share = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH,"//*[@id='sib_gametype_container']/div/div/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/div/span")))
     actual_market_share = float(market_share.text.strip('%'))
     expected_min_market_share = 0
     expected_max_market_share =100
@@ -1593,53 +1868,126 @@ def test_period_4_table_6(driver):
     ###Now manipulate the slider 
     
     #first slider-  Manipulate the slider value
-def test_period_4_slider_1_manipulation(driver):   
+def test_period_4_slider_1_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider1")
-    pixels_to_move =130
-    action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_4.append(slider_value)
+    desired_value = 143
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_4.append(updated_value)    
 
-    #Second slider
-def test_period_4_slider_2_manipulation(driver):        
+
+
+def test_period_4_slider_2_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider2")
-    pixels_to_move = -90
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 105580
+    temp_value = desired_value +1285
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_4.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_4.append(updated_value)    
 
-    #3rd slider
-def test_period_4_slider_3_manipulation(driver):    
+def test_period_4_slider_3_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider3")
-    pixels_to_move = -160
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 46656
+    temp_value = desired_value + 774
+    position_change = temp_value - current_value
+    new_position = (position_change /100000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_4.append(slider_value)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)  
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_4.append(updated_value)    
 
-    #4th slider
-def test_period_4_slider_4_manipulation(driver):  
+
+def test_period_4_slider_4_manipulation(driver):     
     if popup_detected:
         pytest.skip("Invalid User Detected. Skipping this test.")
     slider = driver.find_element(By.ID, "bucket-1-basic-slider4")
-    pixels_to_move = 90
+    slider_width = slider.size["width"]
+    slider.click()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    desired_value = 102250
+    temp_value = desired_value +1542
+    position_change = temp_value - current_value
+    new_position = (position_change /200000) * slider_width
     action_chains = ActionChains(driver)
-    action_chains.click_and_hold(slider).move_by_offset(pixels_to_move, 0).release().perform()
-    slider_value = slider.get_attribute("aria-valuenow")
-    print(slider_value)
-    changed_sliders_value_in_period_4.append(slider_value)
-    time.sleep(1)
+    action_chains.click_and_hold(slider).move_by_offset(new_position, 0).release().perform()
+    current_value = int(slider.get_attribute("aria-valuenow"))
+    temp_value = abs(desired_value - current_value)
+    print(current_value,desired_value,temp_value)
+    if current_value < desired_value:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_RIGHT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) >= desired_value:
+                break
+    else:
+        for _ in range(temp_value):
+            slider.send_keys(Keys.ARROW_LEFT)
+            print(int(slider.get_attribute("aria-valuenow")))
+            if int(slider.get_attribute("aria-valuenow")) <= desired_value:
+                break  
+    updated_value = slider.get_attribute("aria-valuenow")
+    changed_sliders_value_in_period_4.append(updated_value)       
+
 
     ##click on submit button
 def test_submit_period_4(driver):      
