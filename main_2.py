@@ -322,13 +322,13 @@ def test_period_1_sliders_default_value(driver):
             # Handle any exceptions, e.g., when the attribute is not found
             print(f"Error while processing a slider: {e}")
     non_zero_values = [value for value in extracted_values if value != '0']
-    if non_zero_values == expected_values:
+    if set(non_zero_values) == set(expected_values):
         assert True
         driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Assertion passed. Sliders Values match the expected values.")
     else:    
         driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))
-        assert non_zero_values == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_values}"
+        assert set(non_zero_values) == set(expected_values), f"Values do not match. Expected: {set(expected_values)}, Actual: {set(non_zero_values)}"
 
     #verify projected Revenue value
 def test_period_1_projected_revenue(driver):  

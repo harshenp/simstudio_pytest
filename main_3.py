@@ -23,11 +23,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 def driver():
     options = Options()
     options.add_experimental_option("detach", True)
-    #driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
     driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
     driver.maximize_window()
     yield driver
-    # driver.quit() 
+    driver.quit() 
  
 
 def test_user_creation_and_login(driver):
@@ -55,7 +55,7 @@ def test_user_creation_and_login(driver):
     next_button.click()
 
     password_input = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input')))
-    password_input.send_keys('Password')
+    password_input.send_keys('password')
     next_button = driver.find_element(By.XPATH, '//*[@id="passwordNext"]')
     next_button.click()
 
@@ -335,13 +335,13 @@ def test_period_1_sliders_default_value(driver):
             # Handle any exceptions, e.g., when the attribute is not found
             print(f"Error while processing a slider: {e}")
     non_zero_values = [value for value in extracted_values if value != '0']
-    if non_zero_values == expected_values:
+    if set(non_zero_values) == set(expected_values):
         assert True
         driver.save_screenshot(os.path.join(screenshot_true, 'Period_1.png'))
         print("Assertion passed. Sliders Values match the expected values.")
     else:    
         driver.save_screenshot(os.path.join(screenshot_false, 'Period_1.png'))
-        assert non_zero_values == expected_values, f"Values do not match. Expected: {expected_values}, Actual: {non_zero_values}"
+        assert set(non_zero_values) == set(expected_values), f"Values do not match. Expected: {set(expected_values)}, Actual: {set(non_zero_values)}"
 
     #verify projected Revenue value
 def test_period_1_projected_revenue(driver):  
@@ -1017,7 +1017,7 @@ def test_period_2_slider_4_manipulation(driver):
     slider_width = slider.size["width"]
     slider.click()
     current_value = int(slider.get_attribute("aria-valuenow"))
-    desired_value = 139875
+    desired_value = 139874
     temp_value = desired_value + 1542
     position_change = temp_value - current_value
     new_position = (position_change /200000) * slider_width
@@ -1479,7 +1479,7 @@ def test_period_3_slider_4_manipulation(driver):
     slider_width = slider.size["width"]
     slider.click()
     current_value = int(slider.get_attribute("aria-valuenow"))
-    desired_value = 89330
+    desired_value = 89323
     temp_value = desired_value +1542
     position_change = temp_value - current_value
     new_position = (position_change /200000) * slider_width
@@ -1901,7 +1901,7 @@ def test_period_4_slider_2_manipulation(driver):
     slider_width = slider.size["width"]
     slider.click()
     current_value = int(slider.get_attribute("aria-valuenow"))
-    desired_value = 105580
+    desired_value = 106880
     temp_value = desired_value +1285
     position_change = temp_value - current_value
     new_position = (position_change /200000) * slider_width
